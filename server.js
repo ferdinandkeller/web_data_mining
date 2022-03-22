@@ -43,7 +43,7 @@ function query1 (commune) {
   })
 }
 
-function query2 (commune) {
+function query2 () {
   return new Promise((resolve) => {
     readFile('./queries/query2.rq', 'utf-8', (_, query) => {
       //query = query.replace('#COMMUNE', commune)
@@ -67,7 +67,7 @@ function query2 (commune) {
   })
 }
 
-function query3 (commune) {
+function query3 () {
   return new Promise((resolve) => {
     readFile('./queries/query3.rq', 'utf-8', (_, query) => {
       //query = query.replace('#COMMUNE', commune)
@@ -85,6 +85,21 @@ function query3 (commune) {
             return { fontaine, commune, voie, disponible, latitude, longitude }
           })
           resolve(data)
+        //})
+      //})
+    })
+  })
+}
+
+function query4 () {
+  return new Promise((resolve) => {
+    readFile('./queries/query4.rq', 'utf-8', (_, query) => {
+      //query = query.replace('#COMMUNE', commune)
+      //writeFile('./queries/tmp.rq', query, () => {
+        //exec('sparql --data=datasets/ttl/data.ttl --query=queries/tmp.rq', (_, stdout) => {  
+          let lines = stdout.split('\n').slice(3, -2)
+          
+          resolve(lines)
         //})
       //})
     })
