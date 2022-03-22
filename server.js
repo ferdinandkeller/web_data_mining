@@ -54,10 +54,9 @@ function query2 (dispo) {
             let split = line.split('|').slice(1, -1).map(x => x.trim())
             let fontaine = split[0]
             let commune = split[1].split('"')[1]
-            let voie = split[2].split('"')[2]
-            let disponible = split[3].split('"')[3]
-            let latitude = parseFloat(split[4].split('"')[1])
-            let longitude = parseFloat(split[5].split('"')[1])
+            let disponible = split[2].split('"')[2]
+            let latitude = parseFloat(split[3].split('"')[1])
+            let longitude = parseFloat(split[4].split('"')[1])
             return { fontaine, commune, voie, disponible, latitude, longitude }
           })
           resolve(data)
@@ -91,17 +90,17 @@ function query3 () {
   })
 }
 
-function query4 () {
+function query4 (commune) {
   return new Promise((resolve) => {
     readFile('./queries/query4.rq', 'utf-8', (_, query) => {
-      //query = query.replace('#COMMUNE', commune)
-      //writeFile('./queries/tmp.rq', query, () => {
-        //exec('sparql --data=datasets/ttl/data.ttl --query=queries/tmp.rq', (_, stdout) => {  
+      query = query.replace('#COMMUNE', commune)
+      writeFile('./queries/tmp.rq', query, () => {
+        exec('sparql --data=datasets/ttl/data.ttl --query=queries/tmp.rq', (_, stdout) => {  
           let lines = stdout.split('\n').slice(3, -2)
           
           resolve(lines)
-        //})
-      //})
+        })
+      })
     })
   })
 }
@@ -123,7 +122,13 @@ app.get('/api/query1/:arrondissement', async (req, res) => {
 })
 
 app.get('/api/query2/:dispo', async (req, res) => {
-  let fontaines = await query2(req.params.arrondissement == 0 ? 'NON' : 'OUI')
+  let fontaines = await query2(req.params.dispo == 0 ? 'NON' : 'OUI')
+  res.json(fontaines)
+})
+
+app.get('/api/query4/:arrondissement', async (req, res) => {
+  let fontaines = await query4(req.params.arrondissement.toString())
+  //let fontaines = await query4('PARIS ' + req.params.arrondissement.toString() + (req.params.arrondissement==1?'ER':'EME') +  ' ARRONDISSEMENT')
   res.json(fontaines)
 })
 

@@ -17,3 +17,4 @@ WHERE {
   ?geopoint property:latitude ?latitude .
   ?geopoint property:longitude ?longitude .
 }
+ORDER BY ?fontaine
