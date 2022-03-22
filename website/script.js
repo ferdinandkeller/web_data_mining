@@ -84,6 +84,28 @@ async function query_arr(arr) {
   current_layers.push(layer)
 }
 
+async function query_dispo(dispo) {
+  clear_previous_layers()
+
+  let resp = await fetch(`api/query2/${dispo}`)
+  let fontaines = await resp.json()
+
+  let features = []
+  for (let fontaine of fontaines) {
+    let f = new ol.Feature({
+      geometry: new ol.geom.Point(ol.proj.fromLonLat([fontaine.longitude, fontaine.latitude])),
+    })
+    f.setStyle(fontaine.disponible == 'OUI' ? on_style : off_style)
+    features.push(f)
+  }
+  
+  var layer = new ol.layer.Vector({
+    source: new ol.source.Vector({ features }),
+  })
+  map.addLayer(layer)
+  current_layers.push(layer)
+}
+
 // interactive UI
 let arr_in = document.getElementById('arr_in')
 let arr_btn = document.getElementById('arr_btn')
@@ -92,8 +114,14 @@ arr_btn.addEventListener('click', () => {
   if (isNaN(arr) || arr < 0 || arr > 20) {
     query_all()
   } else {
-    query_arr(arr)
+    query_arr(encodeURI('PARIS ' + arr.toString() + (arr == 1 ? 'ER' : 'EME') + ' ARRONDISSEMENT'))
   }
+})
+
+let dispo_in = document.getElementById('dispo_in')
+let dispo_btn = document.getElementById('dispo_btn')
+dispo_btn.addEventListener('click', () => {
+  query_dispo(encodeURI(dispo_in.value))
 })
 
 // load everything by default

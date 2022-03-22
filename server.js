@@ -16,7 +16,7 @@ function to_wifi_rdf(index, commune, geopoint_index) {
 }
 
 // SPARQL CODE
-async function rdf_query0 (commune) {
+async function rdf_query0 () {
   let fontaines = await query0()
   let rdf = header
   let geo_index = 0
@@ -48,6 +48,19 @@ function query0 () {
   })
 }
 
+async function rdf_query1 (commune) {
+  let fontaines = await query1(commune)
+  let rdf = header
+  let geo_index = 0
+  let fontaine_index = 0
+  for (let fontaine of fontaines) {
+    rdf += to_geopoint_rdf(geo_index, fontaine.latitude, fontaine.longitude)
+    rdf += to_fontaine_rdf(fontaine_index, commune, fontaine.voie, fontaine.disponible, geo_index)
+    geo_index += 1
+    fontaine_index += 1
+  }
+  return rdf
+}
 function query1 (commune) {
   return new Promise((resolve) => {
     readFile('./queries/query1.rq', 'utf-8', (_, query) => {
@@ -58,10 +71,11 @@ function query1 (commune) {
           let data = lines.map(line => {
             let split = line.split('|').slice(1, -1).map(x => x.trim())
             let fontaine = split[0]
-            let disponible = split[1].split('"')[1]
-            let latitude = parseFloat(split[2].split('"')[1])
-            let longitude = parseFloat(split[3].split('"')[1])
-            return { fontaine, disponible, latitude, longitude }
+            let voie = split[1]
+            let disponible = split[2].split('"')[1]
+            let latitude = parseFloat(split[3].split('"')[1])
+            let longitude = parseFloat(split[4].split('"')[1])
+            return { fontaine, voie, disponible, latitude, longitude }
           })
           resolve(data)
         })
@@ -81,10 +95,10 @@ function query2 (dispo) {
             let split = line.split('|').slice(1, -1).map(x => x.trim())
             let fontaine = split[0]
             let commune = split[1].split('"')[1]
-            let disponible = split[2].split('"')[2]
+            let voie = split[2].split('"')[1]
             let latitude = parseFloat(split[3].split('"')[1])
             let longitude = parseFloat(split[4].split('"')[1])
-            return { fontaine, commune, voie, disponible, latitude, longitude }
+            return { fontaine, commune, voie, disponible: dispo, latitude, longitude }
           })
           resolve(data)
         })
@@ -95,24 +109,21 @@ function query2 (dispo) {
 
 function query3 () {
   return new Promise((resolve) => {
-    readFile('./queries/query3.rq', 'utf-8', (_, query) => {
-      //query = query.replace('#COMMUNE', commune)
-      //writeFile('./queries/tmp.rq', query, () => {
-        //exec('sparql --data=datasets/ttl/data.ttl --query=queries/tmp.rq', (_, stdout) => {  
-          let lines = stdout.split('\n').slice(3, -2)
-          let data = lines.map(line => {
-            let split = line.split('|').slice(1, -1).map(x => x.trim())
-            let fontaine = split[0]
-            let commune = split[1].split('"')[1]
-            let voie = split[2].split('"')[2]
-            let disponible = split[3].split('"')[3]
-            let latitude = parseFloat(split[4].split('"')[1])
-            let longitude = parseFloat(split[5].split('"')[1])
-            return { fontaine, commune, voie, disponible, latitude, longitude }
-          })
-          resolve(data)
-        //})
-      //})
+    exec('sparql --data=datasets/ttl/data.ttl --query=queries/query3.rq', (_, stdout) => {
+      resolve(stdout)
+    })
+  })
+}
+
+function query4 (commune) {
+  return new Promise((resolve) => {
+    readFile('./queries/query4.rq', 'utf-8', (_, query) => {
+      query = query.replace('#COMMUNE', commune)
+      writeFile('./queries/tmp.rq', query, () => {
+        exec('sparql --data=datasets/ttl/data.ttl --query=queries/tmp.rq', (_, stdout) => {
+          resolve(stdout)
+        })
+      })
     })
   })
 }
@@ -148,20 +159,30 @@ app.get('/api/query0', async (req, res) => {
   res.json(fontaines)
 })
 
+app.get('/api/query1/:arrondissement/rdf.ttl', async (req, res) => {
+  let fontaines = await rdf_query1(decodeURI(req.params.arrondissement))
+  res.header('Content-Type', 'text/turtle')
+  res.send(fontaines)
+})
 app.get('/api/query1/:arrondissement', async (req, res) => {
-  let fontaines = await query1('PARIS ' + req.params.arrondissement.toString() + (req.params.arrondissement==1?'ER':'EME') +  ' ARRONDISSEMENT')
+  let fontaines = await query1(decodeURI(req.params.arrondissement))
   res.json(fontaines)
 })
 
 app.get('/api/query2/:dispo', async (req, res) => {
-  let fontaines = await query2(req.params.dispo == 0 ? 'NON' : 'OUI')
+  let fontaines = await query2(decodeURI(req.params.dispo))
   res.json(fontaines)
 })
 
+app.get('/api/query3/rdf.ttl', async (req, res) => {
+  let fontaines = await query3()
+  res.header('Content-Type', 'text/turtle')
+  res.send(fontaines)
+})
+
 app.get('/api/query4/:arrondissement', async (req, res) => {
-  let fontaines = await query4(req.params.arrondissement.toString())
-  //let fontaines = await query4('PARIS ' + req.params.arrondissement.toString() + (req.params.arrondissement==1?'ER':'EME') +  ' ARRONDISSEMENT')
-  res.json(fontaines)
+  let fontaines = await query4(decodeURI(req.params.arrondissement))
+  res.send(fontaines)
 })
 
 app.listen(port, () => {
