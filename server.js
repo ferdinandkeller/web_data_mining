@@ -67,6 +67,30 @@ function query2 (commune) {
   })
 }
 
+function query3 (commune) {
+  return new Promise((resolve) => {
+    readFile('./queries/query3.rq', 'utf-8', (_, query) => {
+      //query = query.replace('#COMMUNE', commune)
+      //writeFile('./queries/tmp.rq', query, () => {
+        //exec('sparql --data=datasets/ttl/data.ttl --query=queries/tmp.rq', (_, stdout) => {  
+          let lines = stdout.split('\n').slice(3, -2)
+          let data = lines.map(line => {
+            let split = line.split('|').slice(1, -1).map(x => x.trim())
+            let fontaine = split[0]
+            let commune = split[1].split('"')[1]
+            let voie = split[2].split('"')[2]
+            let disponible = split[3].split('"')[3]
+            let latitude = parseFloat(split[4].split('"')[1])
+            let longitude = parseFloat(split[5].split('"')[1])
+            return { fontaine, commune, voie, disponible, latitude, longitude }
+          })
+          resolve(data)
+        //})
+      //})
+    })
+  })
+}
+
 // WEBSITE CODE
 let app = express()
 let port = 8080

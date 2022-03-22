@@ -1,0 +1,12 @@
+Write SPARQL queries to response to the following:
+    List the instances of the geolocated POI
+    List the name of all train station. For each one, display its city.
+    List the name of trips that have Paris (or any other chosen city) as destination.
+    List the name of travellers older than 51 years.
+Propose 5 SPARQL queries:
+    A query that contains at least 2 Optional Graph Patterns - faut ajouter des null
+    A query that contains at least 2 alternatives and conjunctions - x
+    A query that contains a CONSTRUCT query form - ok
+    A query that contains an ASK query form - ok (An ASK query does not include ORDER BY, LIMIT or OFFSET)
+    A query that contains a DESCRIBE query form - ok (query3)
+Define some SWRL rules
