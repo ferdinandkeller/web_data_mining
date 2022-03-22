@@ -29,7 +29,7 @@ h1 {
   margin-bottom: 1em;
 }
 
-p, div, span, input, button {
+p, div, span, input, button, a {
   margin-bottom: 1em;
   word-spacing: .3em;
 }
@@ -53,7 +53,7 @@ p, div, span, input, button {
   flex-direction: row;
   width: min(100%, 400px);
 }
-input, button {
+input, button, a {
   padding: .3em;
   margin: 0;
 }
@@ -61,9 +61,9 @@ input {
   margin-right: 1em;
   width: 100%;
 }
-button {
+button, a {
   width: 100%;
 }
-button:hover {
+button:hover, a:hover {
   cursor: pointer;
 }
