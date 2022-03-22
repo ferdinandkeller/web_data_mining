@@ -2,19 +2,46 @@ const { exec } = require('child_process')
 const { readFile, writeFile, readFileSync } = require('fs')
 const express = require('express')
 
+// RDF CONVERTER
+let header = readFileSync('./datasets/ttl/template.ttl', 'utf-8')
+
+function to_geopoint_rdf(index, lat, long) {
+  return `individual:geopoint${index}\n  rdf:type class:GeoPoint ;\n  property:latitude "${lat}" ;\n  property:longitude "${long}" .\n\n`
+}
+function to_fontaine_rdf(index, commune, voie, disponible, geopoint_index) {
+  return `individual:fontaine${index}\n  rdf:type class:Fontaine ;\n  property:commune "${commune}" ;\n  property:voie "${voie}" ;\n  property:disponible "${disponible}" ;\n  property:geopoint individual:geopoint${geopoint_index} .\n\n`
+}
+function to_wifi_rdf(index, commune, geopoint_index) {
+  return `individual:wifi${index}\n  rdf:type class:Wifi ;\n  property:commune "${commune}" ;\n  property:geopoint individual:geopoint${geopoint_index} .\n\n`
+}
+
 // SPARQL CODE
+async function rdf_query0 (commune) {
+  let fontaines = await query0()
+  let rdf = header
+  let geo_index = 0
+  let fontaine_index = 0
+  for (let fontaine of fontaines) {
+    rdf += to_geopoint_rdf(geo_index, fontaine.latitude, fontaine.longitude)
+    rdf += to_fontaine_rdf(fontaine_index, fontaine.commune, fontaine.voie, fontaine.disponible, geo_index)
+    geo_index += 1
+    fontaine_index += 1
+  }
+  return rdf
+}
 function query0 () {
   return new Promise((resolve) => {
-    exec('sparql --data=datasets/ttl/data.ttl --query=queries/query0.rq', (_, stdout) => {  
+    exec('sparql --data=datasets/ttl/data.ttl --query=queries/query0.rq', (_, stdout) => {
       let lines = stdout.split('\n').slice(3, -2)
       let data = lines.map(line => {
         let split = line.split('|').slice(1, -1).map(x => x.trim())
         let fontaine = split[0]
         let commune = split[1].split('"')[1]
-        let disponible = split[2].split('"')[1]
-        let latitude = parseFloat(split[3].split('"')[1])
-        let longitude = parseFloat(split[4].split('"')[1])
-        return { fontaine, commune, disponible, latitude, longitude }
+        let voie = split[2].split('"')[1]
+        let disponible = split[3].split('"')[1]
+        let latitude = parseFloat(split[4].split('"')[1])
+        let longitude = parseFloat(split[5].split('"')[1])
+        return { fontaine, commune, voie, disponible, latitude, longitude }
       })
       resolve(data)
     })
@@ -26,7 +53,7 @@ function query1 (commune) {
     readFile('./queries/query1.rq', 'utf-8', (_, query) => {
       query = query.replace('#COMMUNE', commune)
       writeFile('./queries/tmp.rq', query, () => {
-        exec('sparql --data=datasets/ttl/data.ttl --query=queries/tmp.rq', (_, stdout) => {  
+        exec('sparql --data=datasets/ttl/data.ttl --query=queries/tmp.rq', (_, stdout) => {
           let lines = stdout.split('\n').slice(3, -2)
           let data = lines.map(line => {
             let split = line.split('|').slice(1, -1).map(x => x.trim())
@@ -111,6 +138,11 @@ let port = 8080
 
 app.use(express.static('website'))
 
+app.get('/api/query0/rdf.ttl', async (req, res) => {
+  let fontaines = await rdf_query0()
+  res.header('Content-Type', 'text/turtle')
+  res.send(fontaines)
+})
 app.get('/api/query0', async (req, res) => {
   let fontaines = await query0()
   res.json(fontaines)
