@@ -8,4 +8,3 @@ PREFIX foaf: <http://xmlns.com/foaf/0.1/>
 PREFIX rel: <http://www.perceive.net/schemas/relationship/>
 
 ASK { ?fontaine property:commune "#COMMUNE" }
-

@@ -128,6 +128,21 @@ function query4 (commune) {
   })
 }
 
+function query4 (commune) {
+  return new Promise((resolve) => {
+    readFile('./queries/query4.rq', 'utf-8', (_, query) => {
+      query = query.replace('#COMMUNE', commune)
+      writeFile('./queries/tmp.rq', query, () => {
+        exec('sparql --data=datasets/ttl/data.ttl --query=queries/tmp.rq', (_, stdout) => {  
+          let lines = stdout.split('\n').slice(3, -2)
+          
+          resolve(lines)
+        })
+      })
+    })
+  })
+}
+
 // WEBSITE CODE
 let app = express()
 let port = 8080
