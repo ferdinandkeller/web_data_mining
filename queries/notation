@@ -1,5 +1,5 @@
 Write SPARQL queries to response to the following:
-    List the instances of the geolocated POI
+    List the instances of the geolocated POI (query0)
     List the name of all train station. For each one, display its city.
     List the name of trips that have Paris (or any other chosen city) as destination.
     List the name of travellers older than 51 years.

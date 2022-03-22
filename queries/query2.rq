@@ -10,10 +10,10 @@ PREFIX rel: <http://www.perceive.net/schemas/relationship/>
 SELECT ?fontaine ?commune ?voie ?disponible ?latitude ?longitude
 WHERE {
   ?fontaine rdf:type class:Fontaine .
-  ?fontaine property:commune ?COMMUNE .
+  ?fontaine property:commune ?commune .
   ?fontaine property:geopoint ?geopoint .
   ?fontaine property:voie ?voie .
-  ?fontaine property:disponible "OUI" .
+  ?fontaine property:disponible "#DISPO" .
   ?geopoint property:latitude ?latitude .
   ?geopoint property:longitude ?longitude .
 }

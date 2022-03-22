@@ -43,12 +43,12 @@ function query1 (commune) {
   })
 }
 
-function query2 () {
+function query2 (dispo) {
   return new Promise((resolve) => {
     readFile('./queries/query2.rq', 'utf-8', (_, query) => {
-      //query = query.replace('#COMMUNE', commune)
-      //writeFile('./queries/tmp.rq', query, () => {
-        //exec('sparql --data=datasets/ttl/data.ttl --query=queries/tmp.rq', (_, stdout) => {  
+      query = query.replace('#DISPO', dispo)
+      writeFile('./queries/tmp.rq', query, () => {
+        exec('sparql --data=datasets/ttl/data.ttl --query=queries/tmp.rq', (_, stdout) => {  
           let lines = stdout.split('\n').slice(3, -2)
           let data = lines.map(line => {
             let split = line.split('|').slice(1, -1).map(x => x.trim())
@@ -61,8 +61,8 @@ function query2 () {
             return { fontaine, commune, voie, disponible, latitude, longitude }
           })
           resolve(data)
-        //})
-      //})
+        })
+      })
     })
   })
 }
@@ -119,6 +119,11 @@ app.get('/api/query0', async (req, res) => {
 
 app.get('/api/query1/:arrondissement', async (req, res) => {
   let fontaines = await query1('PARIS ' + req.params.arrondissement.toString() + (req.params.arrondissement==1?'ER':'EME') +  ' ARRONDISSEMENT')
+  res.json(fontaines)
+})
+
+app.get('/api/query2/:dispo', async (req, res) => {
+  let fontaines = await query2(req.params.arrondissement == 0 ? 'NON' : 'OUI')
   res.json(fontaines)
 })
 
