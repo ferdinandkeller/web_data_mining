@@ -1,0 +1,18 @@
+PREFIX me: <http://example.org/>
+PREFIX class: <http://example.org/class/>
+PREFIX property: <http://example.org/property/>
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX rel: <http://www.perceive.net/schemas/relationship/>
+
+SELECT ?fontaine ?disponible ?latitude ?longitude
+WHERE {
+  ?fontaine rdf:type class:Fontaine .
+  ?fontaine property:commune "#COMMUNE" .
+  ?fontaine property:geopoint ?geopoint .
+  ?fontaine property:disponible ?disponible .
+  ?geopoint property:latitude ?latitude .
+  ?geopoint property:longitude ?longitude .
+}

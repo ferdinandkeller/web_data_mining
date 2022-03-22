@@ -1,0 +1,52 @@
+# prefixes
+@base <http://example.org/> .
+@prefix class: <http://example.org/class/> .
+@prefix property: <http://example.org/property/> .
+@prefix individual: <http://example.org/individual/> .
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rel: <http://www.perceive.net/schemas/relationship/> .
+
+
+# set GeoPoint class
+class:GeoPoint
+  rdf:type rdfs:Class ;
+  rdfs:label "GeoPoint" .
+
+property:latitude
+  rdf:type rdf:Property ;
+  rdfs:label "latitude" .
+
+property:longitude
+  rdf:type rdf:Property ;
+  rdfs:label "longitude" .
+
+# set Fontaine class
+class:Fontaine
+  rdf:type rdfs:Class ;
+  rdfs:label "Fontaine" .
+
+property:commune
+  rdf:type rdf:Property ;
+  rdfs:label "commune" .
+
+property:voie
+  rdf:type rdf:Property ;
+  rdfs:label "voie" .
+
+property:disponible
+  rdf:type rdf:Property ;
+  rdfs:label "disponible" .
+
+property:geopoint
+  rdf:type rdf:Property ;
+  rdfs:label "geopoint" ;
+  rdfs:range class:GeoPoint .
+
+# set Wifi class
+class:Wifi
+  rdf:type rdfs:Class ;
+  rdfs:label "Wifi" .
+
+# individuals
