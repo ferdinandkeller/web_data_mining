@@ -65,6 +65,40 @@ function query0wifi () {
   })
 }
 
+function query0travel () {
+  return new Promise((resolve) => {
+    exec('sparql --data=datasets/ttl/data.ttl --query=queries/query0-travel-op.rq', (_, stdout) => {
+      let lines = stdout.split('\n').slice(3, -2)
+      let data = lines.map(line => {
+        let split = line.split('|').slice(1, -1).map(x => x.trim())
+        let travel = split[0]
+        let traveler = split[1].split('"')[1]
+        let name = split[2].split('"')[1]
+        let date = split[3].split('"')[1]
+        let wifi = split[4].split('"')[1]
+        return { travel, traveler, name, date, wifi }
+      })
+      resolve(data)
+    })
+  })
+}
+
+function query0traveler () {
+  return new Promise((resolve) => {
+    exec('sparql --data=datasets/ttl/data.ttl --query=queries/query0-traveler.rq', (_, stdout) => {
+      let lines = stdout.split('\n').slice(3, -2)
+      let data = lines.map(line => {
+        let split = line.split('|').slice(1, -1).map(x => x.trim())
+        let traveler = split[0]
+        let name = split[1].split('"')[1]
+        let age = parseFloat(split[2].split('"')[1])
+        return { traveler, name, age }
+      })
+      resolve(data)
+    })
+  })
+}
+
 async function rdf_query1 (commune) {
   let fontaines = await query1(commune)
   let rdf = header
@@ -223,6 +257,14 @@ app.get('/api/query0', async (req, res) => {
 app.get('/api/query0wifi', async (req, res) => {
   let wifis = await query0wifi()
   res.json(wifis)
+})
+app.get('/api/query0travel', async (req, res) => {
+  let travels = await query0travel()
+  res.json(travels)
+})
+app.get('/api/query0traveler', async (req, res) => {
+  let travelers = await query0traveler()
+  res.json(travelers)
 })
 
 app.get('/api/query1/:arrondissement/rdf.ttl', async (req, res) => {

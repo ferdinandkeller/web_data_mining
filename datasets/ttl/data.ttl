@@ -71,6 +71,7 @@ property:date
   rdfs:label "date" .
 
 # individuals
+# individuals
 
 individual:traveler1
   rdf:type class:Traveler ;
@@ -84,21 +85,21 @@ individual:traveler2
 
 individual:travel1
   rdf:type class:Travel ;
-  property:traveler individual:traveler1 .
+  property:traveler individual:traveler1 ;
+  property:date "2022/02/25" ;
   property:fontaine individual:fontaine100 .
-  property:date "2022/02/25" .
 
 individual:travel2
   rdf:type class:Travel ;
-  property:traveler individual:traveler2 .
+  property:traveler individual:traveler2 ;
+  property:date "2022/03/20" ;
   property:wifi individual:wifi35 .
-  property:date "2022/03/20" .
 
 individual:travel3
   rdf:type class:Travel ;
-  property:traveler individual:traveler1 .
-  property:wifi individual:wifi140 .
-  property:date "2022/03/01" .
+  property:traveler individual:traveler1 ;
+  property:date "2022/03/01" ;
+  property:wifi individual:wifi35 .
 
 individual:geopoint1
   rdf:type class:GeoPoint ;
