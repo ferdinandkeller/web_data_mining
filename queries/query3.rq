@@ -7,15 +7,14 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX foaf: <http://xmlns.com/foaf/0.1/>
 PREFIX rel: <http://www.perceive.net/schemas/relationship/>
 
-DESCRIBE ?fontaine ?commune ?voie ?disponible 
+DESCRIBE ?fontaine
 WHERE {
   ?fontaine rdf:type class:Fontaine .
   ?fontaine property:commune ?COMMUNE .
-  ?fontaine property:geopoint ?geopoint .
   ?fontaine property:voie ?voie .
   ?fontaine property:disponible "OUI" .
+  ?fontaine property:geopoint ?geopoint .
   ?geopoint property:latitude ?latitude .
   ?geopoint property:longitude ?longitude .
 }
 ORDER BY ?fontaine
-
