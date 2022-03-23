@@ -10,7 +10,7 @@ PREFIX rel: <http://www.perceive.net/schemas/relationship/>
 SELECT ?wifi ?latitude ?longitude
 WHERE {
   ?wifi rdf:type class:Wifi .
-  ?wifi property:commune "PARIS 5EME ARRONDISSEMENT" .
+  ?wifi property:commune "PARIS 4EME ARRONDISSEMENT" .
   ?wifi property:geopoint ?geopoint .
   ?geopoint property:latitude ?latitude .
   ?geopoint property:longitude ?longitude .

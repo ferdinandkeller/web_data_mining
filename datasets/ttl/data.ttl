@@ -8,7 +8,6 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix rel: <http://www.perceive.net/schemas/relationship/> .
 
-
 # set GeoPoint class
 class:GeoPoint
   rdf:type rdfs:Class ;
@@ -48,6 +47,28 @@ property:geopoint
 class:Wifi
   rdf:type rdfs:Class ;
   rdfs:label "Wifi" .
+
+# set Traveler class
+class:Traveler
+  rdf:type rdfs:Class ;
+  rdfs:label "Traveler" .
+
+property:id
+  rdf:type rdf:Property ;
+  rdfs:label "id" .
+
+property:age
+  rdf:type rdf:Property ;
+  rdfs:label "age" .
+
+# set Travel class
+class:Travel
+  rdf:type rdfs:Class ;
+  rdfs:label "Travel" .
+
+property:date
+  rdf:type rdf:Property ;
+  rdfs:label "date" .
 
 # individuals
 individual:geopoint1
