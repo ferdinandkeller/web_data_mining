@@ -2,6 +2,19 @@ const { exec } = require('child_process')
 const { readFile, writeFile, readFileSync } = require('fs')
 const express = require('express')
 
+// RDF CONVERTER
+let header = readFileSync('./datasets/ttl/template.ttl', 'utf-8')
+
+function to_geopoint_rdf(index, lat, long) {
+  return `individual:geopoint${index}\n  rdf:type class:GeoPoint ;\n  property:latitude "${lat}" ;\n  property:longitude "${long}" .\n\n`
+}
+function to_fontaine_rdf(index, commune, voie, disponible, geopoint_index) {
+  return `individual:fontaine${index}\n  rdf:type class:Fontaine ;\n  property:commune "${commune}" ;\n  property:voie "${voie}" ;\n  property:disponible "${disponible}" ;\n  property:geopoint individual:geopoint${geopoint_index} .\n\n`
+}
+function to_wifi_rdf(index, commune, geopoint_index) {
+  return `individual:wifi${index}\n  rdf:type class:Wifi ;\n  property:commune "${commune}" ;\n  property:geopoint individual:geopoint${geopoint_index} .\n\n`
+}
+
 // SPARQL CODE
 function query0 () {
   return new Promise((resolve) => {
