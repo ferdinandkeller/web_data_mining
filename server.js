@@ -154,6 +154,49 @@ function query1wifi (commune) {
     })
   })
 }
+function query1traveler (name) {
+  return new Promise((resolve) => {
+    readFile('./queries/query1-traveler.rq', 'utf-8', (_, query) => {
+      query = query.replace('#NAME', name)
+      writeFile('./queries/tmptraveler.rq', query, () => {
+        exec('sparql --data=datasets/ttl/data.ttl --query=queries/tmptraveler.rq', (_, stdout) => {
+          let lines = stdout.split('\n').slice(3, -2)
+          let data = lines.map(line => {
+            let split = line.split('|').slice(1, -1).map(x => x.trim())
+            let traveler = split[0]
+            let name = split[1]
+            let age = parseFloat(split[2].split('"')[1])
+            return { traveler, name, age }
+          })
+          resolve(data)
+        })
+      })
+    })
+  })
+}
+function query1travel (date) {
+  return new Promise((resolve) => {
+    readFile('./queries/query1-travel.rq', 'utf-8', (_, query) => {
+      query = query.replace('#DATE', date)
+      writeFile('./queries/tmptravel.rq', query, () => {
+        exec('sparql --data=datasets/ttl/data.ttl --query=queries/tmptravel.rq', (_, stdout) => {
+          let lines = stdout.split('\n').slice(3, -2)
+          let data = lines.map(line => {
+            let split = line.split('|').slice(1, -1).map(x => x.trim())
+            let travel = split[0]
+            let date = split[1]
+            let traveler = split[2]
+            let name = split[3]
+            let wifi = split[4]
+            let fontaine = split[5]
+            return { travel, date, traveler, name, wifi, fontaine }
+          })
+          resolve(data)
+        })
+      })
+    })
+  })
+}
 
 function query2 (dispo) {
   return new Promise((resolve) => {
@@ -279,6 +322,14 @@ app.get('/api/query1/:arrondissement', async (req, res) => {
 app.get('/api/query1wifi/:arrondissement', async (req, res) => {
   let wifis = await query1wifi(decodeURI(req.params.arrondissement))
   res.json(wifis)
+})
+app.get('/api/query1traveler/:name', async (req, res) => {
+  let travelers = await query1traveler(decodeURI(req.params.name))
+  res.json(travelers)
+})
+app.get('/api/query1travel/:date', async (req, res) => {
+  let travels = await query1travel(decodeURI(req.params.date))
+  res.json(travels)
 })
 
 app.get('/api/query2/:dispo', async (req, res) => {

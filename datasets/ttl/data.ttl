@@ -75,7 +75,7 @@ property:date
 
 individual:traveler1
   rdf:type class:Traveler ;
-  property:name "Ferdiand" ;
+  property:name "Ferdinand" ;
   property:age "25" .
 
 individual:traveler2
@@ -86,19 +86,19 @@ individual:traveler2
 individual:travel1
   rdf:type class:Travel ;
   property:traveler individual:traveler1 ;
-  property:date "2022/02/25" ;
+  property:date "2022-02-25" ;
   property:fontaine individual:fontaine100 .
 
 individual:travel2
   rdf:type class:Travel ;
   property:traveler individual:traveler2 ;
-  property:date "2022/03/20" ;
+  property:date "2022-03-20" ;
   property:wifi individual:wifi35 .
 
 individual:travel3
   rdf:type class:Travel ;
   property:traveler individual:traveler1 ;
-  property:date "2022/03/01" ;
+  property:date "2022-03-01" ;
   property:wifi individual:wifi35 .
 
 individual:geopoint1
