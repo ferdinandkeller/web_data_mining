@@ -53,9 +53,9 @@ class:Traveler
   rdf:type rdfs:Class ;
   rdfs:label "Traveler" .
 
-property:id
+property:name
   rdf:type rdf:Property ;
-  rdfs:label "id" .
+  rdfs:label "name" .
 
 property:age
   rdf:type rdf:Property ;
@@ -71,6 +71,35 @@ property:date
   rdfs:label "date" .
 
 # individuals
+
+individual:traveler1
+  rdf:type class:Traveler ;
+  property:name "Ferdiand" ;
+  property:age "25" .
+
+individual:traveler2
+  rdf:type class:Traveler ;
+  property:name "Yunong" ;
+  property:age "21" .
+
+individual:travel1
+  rdf:type class:Travel ;
+  property:traveler individual:traveler1 .
+  property:fontaine individual:fontaine100 .
+  property:date "2022/02/25" .
+
+individual:travel2
+  rdf:type class:Travel ;
+  property:traveler individual:traveler2 .
+  property:wifi individual:wifi35 .
+  property:date "2022/03/20" .
+
+individual:travel3
+  rdf:type class:Travel ;
+  property:traveler individual:traveler1 .
+  property:wifi individual:wifi140 .
+  property:date "2022/03/01" .
+
 individual:geopoint1
   rdf:type class:GeoPoint ;
   property:latitude "48.84744934199842" ;
