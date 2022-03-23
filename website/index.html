@@ -14,7 +14,7 @@
 <body>
   <div class="content">
     <h1>Web Data Mining</h1>
-    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptatem, rerum neque. Beatae, asperiores debitis quo provident iusto possimus pariatur ab sint, perferendis eos nesciunt! Quam distinctio minima laboriosam mollitia ipsa molestiae dignissimos assumenda. Eos laudantium sed quibusdam voluptates! Magnam reiciendis voluptate numquam laboriosam, facere unde dolores dolore corrupti soluta debitis doloribus et. Quisquam eius eaque est ipsum veritatis facilis, impedit consequuntur numquam dolorem tempora, quia libero neque qui beatae sapiente ab quaerat. Fugiat maxime omnis incidunt in commodi aspernatur, nesciunt quisquam iusto ducimus aliquam sequi rem! Odio sunt consectetur quos sint illo saepe praesentium, eligendi excepturi temporibus molestias tempora ut.</p>
+    <p>Notre application trouve les points wifis ainsi que les fontaines dans Paris.</p>
     <div class="input">
       <input id="arr_in" type="number" placeholder="arrondissement">
       <button id="arr_btn">charger</button>
@@ -24,10 +24,16 @@
       <button id="dispo_btn">charger</button>
     </div>
     <div class="input">
-      <a href="localhost:8080/api/query3/rdf.ttl">Download RDF</a>
+      <a href="localhost:8080/api/query3/rdf.ttl">Download RDF Fontaines</a>
+    </div>
+    <div class="input">
+      <a href="localhost:8080/api/query3wifi/rdf.ttl">Download RDF Wifi</a>
     </div>
     <div class="input">
       <a href="localhost:8080/api/query4/PARIS%202EME%20ARRONDISSEMENT">ASK QUERY</a>
+    </div>
+    <div class="input">
+      <button id="opt_btn">optional query</button>
     </div>
     <div id="map"></div>
   </div>
