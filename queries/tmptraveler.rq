@@ -7,3 +7,9 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX foaf: <http://xmlns.com/foaf/0.1/>
 PREFIX rel: <http://www.perceive.net/schemas/relationship/>
 
+SELECT ?traveler ?name ?age
+WHERE {
+  ?traveler rdf:type class:Traveler .
+  ?traveler property:name "Ferdinand" .
+  ?traveler property:age ?age .
+}

@@ -184,12 +184,12 @@ function query1travel (date) {
           let data = lines.map(line => {
             let split = line.split('|').slice(1, -1).map(x => x.trim())
             let travel = split[0]
-            let date = split[1]
-            let traveler = split[2]
-            let name = split[3]
+            let traveler = split[1]
+            let name = split[2]
+            let date = split[3]
             let wifi = split[4]
             let fontaine = split[5]
-            return { travel, date, traveler, name, wifi, fontaine }
+            return { travel, traveler, name, date, wifi, fontaine }
           })
           resolve(data)
         })
