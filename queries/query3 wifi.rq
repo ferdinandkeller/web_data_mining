@@ -1,0 +1,19 @@
+PREFIX me: <http://example.org/>
+PREFIX class: <http://example.org/class/>
+PREFIX property: <http://example.org/property/>
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX rel: <http://www.perceive.net/schemas/relationship/>
+
+DESCRIBE ?wifi ?commune ?latitude ?longitude
+WHERE {
+  ?wifi rdf:type class:wifi .
+  ?wifi property:commune "PARIS 19EME ARRONDISSEMENT" .
+  ?wifi property:geopoint ?geopoint .
+  ?geopoint property:latitude ?latitude .
+  ?geopoint property:longitude ?longitude .
+}
+ORDER BY ?wifi
+

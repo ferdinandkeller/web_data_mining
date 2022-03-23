@@ -127,6 +127,14 @@ function query3 () {
   })
 }
 
+function query3_wifi () {
+  return new Promise((resolve) => {
+    exec('sparql --data=datasets/ttl/data.ttl --query=queries/query3 wifi.rq', (_, stdout) => {
+      resolve(stdout)
+    })
+  })
+}
+
 
 function query4 (commune) {
   return new Promise((resolve) => {
@@ -189,6 +197,12 @@ app.get('/api/query3/rdf.ttl', async (req, res) => {
   let fontaines = await query3()
   res.header('Content-Type', 'text/turtle')
   res.send(fontaines)
+})
+
+app.get('/api/wifi3/rdf.ttl', async (req, res) => {
+  let wifis = await query3_wifi()
+  res.header('Content-Type', 'text/turtle')
+  res.send(wifis)
 })
 
 app.get('/api/query4/:arrondissement', async (req, res) => {
