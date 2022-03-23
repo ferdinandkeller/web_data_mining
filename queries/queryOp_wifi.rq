@@ -7,13 +7,9 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX foaf: <http://xmlns.com/foaf/0.1/>
 PREFIX rel: <http://www.perceive.net/schemas/relationship/>
 
-DESCRIBE ?wifi ?commune ?latitude ?longitude
-WHERE {
-  ?wifi rdf:type class:wifi .
-  ?wifi property:commune "PARIS 19EME ARRONDISSEMENT" .
-  ?wifi property:geopoint ?geopoint .
-  ?geopoint property:latitude ?latitude .
-  ?geopoint property:longitude ?longitude .
-}
-ORDER BY ?wifi
+SELECT ?wifi ?commune ?geopoint
+WHERE  { ?wifi rdf:type class:Wifi .
+         OPTIONAL { ?wifi property:commune ?commune . } .
+         OPTIONAL { ?wifi property:geopoint ?geopoint . }
+       }
 

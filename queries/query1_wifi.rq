@@ -10,7 +10,7 @@ PREFIX rel: <http://www.perceive.net/schemas/relationship/>
 SELECT ?wifi ?commune ?latitude ?longitude
 WHERE {
   ?wifi rdf:type class:Wifi .
-  ?wifi property:commune ?commune .
+  ?wifi property:commune "#COMMUNE" .
   ?wifi property:geopoint ?geopoint .
   ?geopoint property:latitude ?latitude .
   ?geopoint property:longitude ?longitude .

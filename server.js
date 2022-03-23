@@ -36,7 +36,7 @@ function query0 () {
 
 function query0_wifi () {
   return new Promise((resolve) => {
-    exec('sparql --data=datasets/ttl/data.ttl --query=queries/query0 wifi.rq', (_, stdout) => {  
+    exec('sparql --data=datasets/ttl/data.ttl --query=queries/query0_wifi.rq', (_, stdout) => {  
       let lines = stdout.split('\n').slice(3, -2)
       let data = lines.map(line => {
         let split = line.split('|').slice(1, -1).map(x => x.trim())
@@ -129,7 +129,7 @@ function query3 () {
 
 function query3_wifi () {
   return new Promise((resolve) => {
-    exec('sparql --data=datasets/ttl/data.ttl --query=queries/query3 wifi.rq', (_, stdout) => {
+    exec('sparql --data=datasets/ttl/data.ttl --query=queries/query3_wifi.rq', (_, stdout) => {
       resolve(stdout)
     })
   })
@@ -161,6 +161,24 @@ function query4_wifi (commune) {
     })
   })
 }
+
+function queryOp_wifi () {
+  return new Promise((resolve) => {
+        exec('sparql --data=datasets/ttl/data.ttl --query=queries/queryOp_wifi.rq', (_, stdout) => {
+          let lines = stdout.split('\n').slice(3, -2)
+          let data = lines.map(line => {
+            let split = line.split('|').slice(1, -1).map(x => x.trim())
+            let wifi = split[0]
+            let commune = split[1]
+            let geopoint = split[2]
+            return { fontaine, commune, geopoint }
+          })
+          resolve(data)
+        })
+  })
+}
+  
+
 
 // WEBSITE CODE
 let app = express()
@@ -213,6 +231,11 @@ app.get('/api/query4/:arrondissement', async (req, res) => {
 app.get('/api/wifi4/:arrondissement', async (req, res) => {
   let wifis = await query4_wifi(decodeURI(req.params.arrondissement))
   res.send(wifis)
+})
+
+app.get('/api/list-wifi', async (req, res) => {
+  let wifis = await queryOp_wifi()
+  res.json(wifis)
 })
 
 app.listen(port, () => {
