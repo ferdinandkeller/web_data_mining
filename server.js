@@ -48,8 +48,6 @@ function query0 () {
   })
 }
 
-
-
 function query0wifi () {
   return new Promise((resolve) => {
     exec('sparql --data=datasets/ttl/data.ttl --query=queries/query0-wifi.rq', (_, stdout) => {
@@ -153,6 +151,7 @@ function query3 () {
     })
   })
 }
+
 function query3wifi () {
   return new Promise((resolve) => {
     exec('sparql --data=datasets/ttl/data.ttl --query=queries/query3-wifi.rq', (_, stdout) => {
