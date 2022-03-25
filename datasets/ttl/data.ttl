@@ -71,12 +71,10 @@ property:date
   rdfs:label "date" .
 
 # individuals
-# individuals
-
 individual:traveler1
   rdf:type class:Traveler ;
   property:name "Ferdinand" ;
-  property:age "25" .
+  property:age "22" .
 
 individual:traveler2
   rdf:type class:Traveler ;
@@ -101,6 +99,7 @@ individual:travel3
   property:date "2022-03-01" ;
   property:wifi individual:wifi35 .
 
+# fontaines
 individual:geopoint1
   rdf:type class:GeoPoint ;
   property:latitude "48.84744934199842" ;

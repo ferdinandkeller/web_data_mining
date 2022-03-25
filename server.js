@@ -164,7 +164,7 @@ function query1traveler (name) {
           let data = lines.map(line => {
             let split = line.split('|').slice(1, -1).map(x => x.trim())
             let traveler = split[0]
-            let name = split[1]
+            let name = split[1].split('"')[1]
             let age = parseFloat(split[2].split('"')[1])
             return { traveler, name, age }
           })
@@ -185,8 +185,8 @@ function query1travel (date) {
             let split = line.split('|').slice(1, -1).map(x => x.trim())
             let travel = split[0]
             let traveler = split[1]
-            let name = split[2]
-            let date = split[3]
+            let name = split[2].split('"')[1]
+            let date = split[3].split('"')[1]
             let wifi = split[4]
             let fontaine = split[5]
             return { travel, traveler, name, date, wifi, fontaine }

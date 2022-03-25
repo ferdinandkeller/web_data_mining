@@ -11,5 +11,6 @@ SELECT ?traveler ?name ?age
 WHERE {
   ?traveler rdf:type class:Traveler .
   ?traveler property:name "#NAME" .
+  ?traveler property:name ?name .
   ?traveler property:age ?age .
 }

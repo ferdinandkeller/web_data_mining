@@ -11,6 +11,7 @@ SELECT ?travel ?traveler ?name ?date ?wifi ?fontaine
 WHERE {
   ?travel rdf:type class:Travel .
   ?travel property:date "#DATE" .
+  ?travel property:date ?date .
   ?travel property:traveler ?traveler .
   ?traveler property:name ?name .
   OPTIONAL {

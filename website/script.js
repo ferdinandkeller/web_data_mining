@@ -231,6 +231,17 @@ opt_btn.addEventListener('click', () => {
   queryoptwifi()
 })
 
+let voyr_in = document.getElementById('voyr_in')
+let voyr_btn = document.getElementById('voyr_btn')
+voyr_btn.addEventListener('click', () => {
+  window.open('/api/query1traveler/' + encodeURI(voyr_in.value));
+})
+let voy_in = document.getElementById('voy_in')
+let voy_btn = document.getElementById('voy_btn')
+voy_btn.addEventListener('click', () => {
+  window.open('/api/query1travel/' + encodeURI(voy_in.value));
+})
+
 // load everything by default
 query_all()
 query_all_wifi()
