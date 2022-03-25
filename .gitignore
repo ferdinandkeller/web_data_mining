@@ -131,4 +131,7 @@ dist
 
 
 queries/tmp.rq
+queries/tmpwifi.rq
+queries/tmptravel.rq
+queries/tmptraveler.rq
 package-lock.json
